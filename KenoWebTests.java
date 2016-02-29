@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.junit.Assert;
 import org.junit.After;
@@ -10,7 +11,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
-
 
 public class KenoWebTests {
 
@@ -35,12 +35,12 @@ public class KenoWebTests {
 	}
 	
 	public void checkGameGuideNameAndSize() {		
-		// Navigate to the "How to play" section
+		// Navigate to "How to play" section
 		driver.findElement(By.xpath("//p//a[@href='/how-to-play']")).click();
 		
 		// Scrolling the web page is not required for this test. Can be skipped by commenting it out.
 		JavascriptExecutor jse = (JavascriptExecutor)driver;
-		jse.executeScript("window.scrollBy(0,400)", "");
+		jse.executeScript("window.scrollBy(0,500)", "");
 		
 		// Find the name of the pdf
 		WebElement name = driver.findElement(By.xpath("//div[@class='details']//div"));
@@ -56,7 +56,7 @@ public class KenoWebTests {
 	}
 	
 	public void findYourLocalPub(String name) {		
-		// Navigate to the "Find your local" section
+		// Navigate to "Find your local" section
 		driver.findElement(By.xpath("//p//a[@ui-sref='venue-finder']")).click();
 		
 		// Get rid of the share location prompt
@@ -67,15 +67,12 @@ public class KenoWebTests {
 		driver.findElement(By.xpath("//button[contains(.,'Pub')]")).click();
 		driver.findElement(By.id("venue-search")).sendKeys(name);
 		
-		// Locate and assert the search results returned with the expected results
-		WebElement searchResultOne = driver.findElement(By.xpath("//*[contains(text(),'Statesman Hotel')]"));
-		String venueOne = searchResultOne.getText();
-		
-		WebElement searchResultTwo = driver.findElement(By.xpath("//*[contains(text(),'Fyshwick Tavern')]"));
-		String venueTwo = searchResultTwo.getText();
-		
-		Assert.assertEquals(venueOne, "Statesman Hotel");
-		Assert.assertEquals(venueTwo, "Fyshwick Tavern");
+		// Locate and assert the search results with the expected results
+		List<WebElement> venueList = driver.findElements(By.xpath("//small[@class='venue-details']"));	
+		for (WebElement venue : venueList) {
+			String venueType = venue.getText();
+			Assert.assertEquals(venueType, "PUB");
+		}
 	}
 	
 	@After
