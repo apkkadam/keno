@@ -66,13 +66,22 @@ public class KenoWebTests {
 		// Click the button "Pub" and type in the name to search for
 		driver.findElement(By.xpath("//button[contains(.,'Pub')]")).click();
 		driver.findElement(By.id("venue-search")).sendKeys(name);
+		
+		// Locate and assert the search results returned with the expected results
+		WebElement searchResultOne = driver.findElement(By.xpath("//*[contains(text(),'Statesman Hotel')]"));
+		String venueOne = searchResultOne.getText();
+		
+		WebElement searchResultTwo = driver.findElement(By.xpath("//*[contains(text(),'Fyshwick Tavern')]"));
+		String venueTwo = searchResultTwo.getText();
+		
+		Assert.assertEquals(venueOne, "Statesman Hotel");
+		Assert.assertEquals(venueTwo, "Fyshwick Tavern");
 	}
 	
 	@After
 	public void tearDown() throws Exception {
+		// Added the sleep so that we can see the search results for 2 seconds
+		Thread.sleep(2000);
 		driver.close();
 	}
-
-
-
 }
