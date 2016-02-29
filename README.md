@@ -1,4 +1,4 @@
-# keno
+# Keno Website Test Scenarios
 
 A few test scenarios on Keno website using Selenium WebDriver and Java. 
 
